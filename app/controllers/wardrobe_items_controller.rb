@@ -12,3 +12,5 @@ class WardrobeItemsController < ApplicationController
     @wardrobe_item = WardrobeItem.find(params[:id])
   end
 end
+
+
