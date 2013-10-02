@@ -31,23 +31,42 @@ describe WardrobeItemsController do
   end
 
   describe "POST create" do
-    it "creates a new WardrobeIte" do
-      expect {
+    context "with valid params" do
+      it "creates a new WardrobeIte" do
+        expect {
+          post :create, {wardrobe_item: valid_attributes}
+        }.to change(WardrobeItem, :count).by(1)
+      end
+
+      it "assigns a newly created WardrobeItem as @wardrobe_item" do
         post :create, {wardrobe_item: valid_attributes}
-      }.to change(WardrobeItem, :count).by(1)
+
+        expect(assigns(:wardrobe_item)).to be_a(WardrobeItem)
+        expect(assigns(:wardrobe_item)).to be_persisted
+      end
+
+      it "redirects to the created WardrobeItem" do
+        post :create, {wardrobe_item: valid_attributes}
+
+        expect(response).to redirect_to(WardrobeItem.last)
+      end
     end
 
-    it "assigns a newly created WardrobeItem as @wardrobe_item" do
-      post :create, {wardrobe_item: valid_attributes}
+    context "with invalid params" do
+      it "assigns a newly created but unsaved wardrobe_item as @wardrobe_item" do
+        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
 
-      expect(assigns(:wardrobe_item)).to be_a(WardrobeItem)
-      expect(assigns(:wardrobe_item)).to be_persisted
-    end
+        post :create, {:wardrobe_item => {garment: 'red'}}
+        expect(assigns(:wardrobe_item)).to be_a_new(WardrobeItem)
+      end
 
-    it "redirects to the created WardrobeItem" do
-      post :create, {wardrobe_item: valid_attributes}
+      it "re-renders the 'new' template" do
 
-      expect(response).to redirect_to(WardrobeItem.last)
+        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
+
+        post :create, {:wardrobe_item => {garment: 'red'}}
+        expect(response).to render_template("new")
+      end
     end
   end
 end
