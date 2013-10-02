@@ -11,6 +11,8 @@ class WardrobeItemsController < ApplicationController
   def show
     @wardrobe_item = WardrobeItem.find(params[:id])
   end
+
+  def new
+    @wardrobe_item = WardrobeItem.new
+  end
 end
-
-
