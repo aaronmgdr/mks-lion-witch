@@ -16,6 +16,10 @@ class WardrobeItemsController < ApplicationController
     @wardrobe_item = WardrobeItem.new
   end
 
+  def edit
+    @wardrobe_item = WardrobeItem.find(params[:id])
+  end
+
   def create
     @wardrobe_item = WardrobeItem.new(wardrobe_item_params)
 
@@ -27,7 +31,7 @@ class WardrobeItemsController < ApplicationController
   end
 
   private
-  
+
   def wardrobe_item_params
     params.require(:wardrobe_item).permit(:garment, :label, :season, :color)
   end
