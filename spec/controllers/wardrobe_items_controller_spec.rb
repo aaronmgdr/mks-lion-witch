@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe WardrobeItemsController do
   let(:valid_attributes) { { "garment" => "boots"} }
+  let(:invalid_attributes) { {"garment" => ""} }
   let(:wardrobe_item) {WardrobeItem.create valid_attributes}
 
   describe 'GET index' do
@@ -76,23 +77,46 @@ describe WardrobeItemsController do
   end
 
   describe 'PUT update' do
-    it "assigns the requested wardrobe_item as @wardrobe_item" do
-      wardrobe_item
-      put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
-      expect(assigns(:wardrobe_item)).to eq(wardrobe_item)
+    context "with valid_attributes" do
+      it "assigns the requested wardrobe_item as @wardrobe_item" do
+        wardrobe_item
+        put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
+        expect(assigns(:wardrobe_item)).to eq(wardrobe_item)
+      end
+
+      it "redirects to the wardrobe_item" do
+        wardrobe_item
+        put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
+        expect(response).to redirect_to(wardrobe_item)
+      end
+
+      it "updates the requested wardrobe_item" do
+        wardrobe_item
+        expect_any_instance_of(WardrobeItem).to receive(:update).with(valid_attributes)
+
+        put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
+      end
     end
 
-    it "redirects to the wardrobe_item" do
-      wardrobe_item
-      put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
-      expect(response).to redirect_to(wardrobe_item)
-    end
+    context "with invalid params" do
+      it "assigns the wardrobe_item as @wardrobe_item" do
+        wardrobe_item
+        #trigger behavoir for invalid attributes
+        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
 
-    it "updates the requested wardrobe_item" do
-      wardrobe_item
-      expect_any_instance_of(WardrobeItem).to receive(:update).with(valid_attributes)
+        put :update, {:id => wardrobe_item, :wardrobe_item => invalid_attributes }
 
-      put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
+        expect(assigns(:wardrobe_item)).to eq(wardrobe_item)
+      end
+
+      it "re-renders the 'edit template" do
+        wardrobe_item
+
+        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
+
+        put :update, {:id => wardrobe_item, :wardrobe_item => invalid_attributes}
+
+        expect(response).to render_template('edit')
     end
   end
 
