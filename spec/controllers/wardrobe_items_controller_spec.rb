@@ -4,6 +4,8 @@ describe WardrobeItemsController do
   let(:valid_attributes) { { "garment" => "boots"} }
   let(:invalid_attributes) { {"garment" => ""} }
   let(:wardrobe_item) {WardrobeItem.create valid_attributes}
+  let(:return_false_on_save) {allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)}
+
 
   describe 'GET index' do
     it "assigns all wardrobe items as @wardrobe_items" do
@@ -53,15 +55,15 @@ describe WardrobeItemsController do
     context "with invalid params" do
       it "assigns a newly created but unsaved wardrobe_item as @wardrobe_item" do
         # Trigger the behavior that occurs when invalid params are submitted
-        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
-        post :create, {:wardrobe_item => { "season" => "invalid value" }}
+        return_false_on_save
+        post :create, {:wardrobe_item => invalid_attributes}
         expect(assigns(:wardrobe_item)).to be_a_new(WardrobeItem)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
-        post :create, {:wardrobe_item => { "season" => "invalid value" }}
+        return_false_on_save
+        post :create, {:wardrobe_item => invalid_attributes}
         expect(response).to render_template("new")
       end
     end
@@ -99,22 +101,21 @@ describe WardrobeItemsController do
     end
 
     context "with invalid params" do
+      let(:invalid_update) {put :update, {:id => wardrobe_item, :wardrobe_item => invalid_attributes}}
+
       it "assigns the wardrobe_item as @wardrobe_item" do
         wardrobe_item
         #trigger behavoir for invalid attributes
-        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
-
-        put :update, {:id => wardrobe_item, :wardrobe_item => invalid_attributes }
+        return_false_on_save
+        invalid_update
 
         expect(assigns(:wardrobe_item)).to eq(wardrobe_item)
       end
 
       it "re-renders the 'edit template" do
         wardrobe_item
-
-        allow_any_instance_of(WardrobeItem).to receive(:save).and_return(false)
-
-        put :update, {:id => wardrobe_item, :wardrobe_item => invalid_attributes}
+        return_false_on_save
+        invalid_update
 
         expect(response).to render_template('edit')
       end
