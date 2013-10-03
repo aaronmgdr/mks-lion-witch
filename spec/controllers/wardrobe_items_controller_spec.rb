@@ -87,6 +87,13 @@ describe WardrobeItemsController do
       put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
       expect(response).to redirect_to(wardrobe_item)
     end
+
+    it "updates the requested wardrobe_item" do
+      wardrobe_item
+      expect_any_instance_of(WardrobeItem).to receive(:update).with(valid_attributes)
+
+      put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
+    end
   end
 
 end
