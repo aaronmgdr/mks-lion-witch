@@ -121,4 +121,21 @@ describe WardrobeItemsController do
     end
   end
 
+  describe "DELETE destroy" do
+      it "destroys the requested wardrobe_item" do
+        wardrobe_item
+
+        expect{
+          delete :destroy, {:id => wardrobe_item}
+        }.to change(WardrobeItem, :count).by(-1)
+      end
+
+      it "redirects to the wardrobe_items list" do
+        wardrobe_item
+
+        delete :destroy, { :id => wardrobe_item}
+
+        expect(response).to render_template('index')
+      end
+    end
 end

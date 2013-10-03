@@ -41,6 +41,11 @@ class WardrobeItemsController < ApplicationController
     end
   end
 
+  def destroy
+    WardrobeItem.find(params[:id]).destroy
+    render action: 'index'
+  end
+
   private
 
   def wardrobe_item_params
