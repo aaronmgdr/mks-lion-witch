@@ -117,6 +117,7 @@ describe WardrobeItemsController do
         put :update, {:id => wardrobe_item, :wardrobe_item => invalid_attributes}
 
         expect(response).to render_template('edit')
+      end
     end
   end
 
