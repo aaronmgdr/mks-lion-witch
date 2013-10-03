@@ -84,6 +84,9 @@ describe WardrobeItemsController do
 
     it "redirects to the wardrobe_item" do
       wardrobe_item
+      put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
+      expect(response).to redirect_to(wardrobe_item)
+    end
   end
 
 end
