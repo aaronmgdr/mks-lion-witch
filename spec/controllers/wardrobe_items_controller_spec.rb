@@ -2,10 +2,11 @@ require 'spec_helper'
 
 describe WardrobeItemsController do
   let(:valid_attributes) { { "garment" => "boots"} }
+  let(:wardrobe_item) {WardrobeItem.create valid_attributes}
 
   describe 'GET index' do
     it "assigns all wardrobe items as @wardrobe_items" do
-      wardrobe_item = WardrobeItem.create valid_attributes
+      wardrobe_item
       get :index
 
       expect(assigns('wardrobe_items')).to eq([wardrobe_item])
@@ -14,7 +15,7 @@ describe WardrobeItemsController do
 
   describe 'GET show' do
     it "assigns the requested wardrobe item as @wardrobe_item" do
-      wardrobe_item = WardrobeItem.create valid_attributes
+      wardrobe_item
       get :show, { id: wardrobe_item }
 
       expect(assigns('wardrobe_item')).to eq(wardrobe_item)
@@ -67,7 +68,7 @@ describe WardrobeItemsController do
 
   describe 'GET edit' do
     it "assigns the requested wardrobe item as @wardrobe_item" do
-      wardrobe_item = WardrobeItem.create valid_attributes
+      wardrobe_item
       get :edit, { id: wardrobe_item }
 
       expect(assigns('wardrobe_item')).to eq(wardrobe_item)
@@ -76,10 +77,13 @@ describe WardrobeItemsController do
 
   describe 'PUT update' do
     it "assigns the requested wardrobe_item as @wardrobe_item" do
-      wardrobe_item = WardrobeItem.create valid_attributes
+      wardrobe_item
       put :update, {:id => wardrobe_item, :wardrobe_item => valid_attributes }
       expect(assigns(:wardrobe_item)).to eq(wardrobe_item)
     end
+
+    it "redirects to the wardrobe_item" do
+      wardrobe_item
   end
 
 end
